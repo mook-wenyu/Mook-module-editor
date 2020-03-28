@@ -144,9 +144,6 @@
   <data name="MissingLeftBrace" xml:space="preserve">
     <value>Missing left brace</value>
   </data>
-  <data name="ModSetting" xml:space="preserve">
-    <value>Mod Setting</value>
-  </data>
   <data name="MookEditor" xml:space="preserve">
     <value>Module editor</value>
   </data>

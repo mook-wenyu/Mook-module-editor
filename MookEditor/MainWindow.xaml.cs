@@ -31,8 +31,7 @@ namespace MookEditor
     public partial class MainWindow : MetroWindow
     {
         public EditorManager editorManager;
-        public string gameModFilePath;
-        public string gameModRootPath;
+        public string projectRootPath;
         public ModConfig modConfig;
         YAMLForm modClass;
         public List<TVItems> listItems = new List<TVItems>();//定义的一个全局泛型，用于存所有TVItem对象和路径
@@ -358,12 +357,8 @@ namespace MookEditor
                 fileTree.Items.Clear();
                 listItems.Clear();
                 editorManager.Clear();
-                if (!string.IsNullOrEmpty(gameModFilePath))
-                {
-                    File.Delete(gameModFilePath);
-                }
-                gameModFilePath = "";
-                gameModRootPath = "";
+
+                projectRootPath = "";
             }
             else
             {
@@ -378,11 +373,83 @@ namespace MookEditor
 
         #region File...
 
-        //新建文件
-        private void menuNewFile_Click(object sender, RoutedEventArgs e)
+        //新建项目
+        private void menuNewProject_Click(object sender, RoutedEventArgs e)
         {
-            editorManager.Clear();
+            MetroWindow win = new MetroWindow();
+            win.Title = LocalizedLangExtension.GetString("NewProject");
+            win.Width = 520;
+            win.Height = 400;
+            win.ShowMaxRestoreButton = false;
+            win.ShowMinButton = false;
+            win.WindowStyle = WindowStyle.None;
+            win.WindowTitleBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3C3C3C"));
+            win.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            StackPanel stackPanelV = new StackPanel();
+            StackPanel stackPanelButton1 = new StackPanel();
+            stackPanelButton1.Orientation = Orientation.Horizontal;
+
+            Button buttonEvents = new Button();
+            buttonEvents.Width = 108;
+            buttonEvents.Height = 32;
+            buttonEvents.FontSize = 14;
+            buttonEvents.SetValue(Button.StyleProperty, Application.Current.Resources["SquareButtonStyle"]);
+            buttonEvents.Content = LocalizedLangExtension.GetString("events");
+            buttonEvents.Margin = new Thickness(32, 24, 0, 0);
+
+            Button buttonNationalFocus = new Button();
+            buttonNationalFocus.Width = 108;
+            buttonNationalFocus.Height = 32;
+            buttonNationalFocus.FontSize = 14;
+            buttonNationalFocus.SetValue(Button.StyleProperty, Application.Current.Resources["SquareButtonStyle"]);
+            buttonNationalFocus.Content = LocalizedLangExtension.GetString("national_focus");
+            buttonNationalFocus.Margin = new Thickness(8, 24, 0, 0);
+
+            Button buttonIdeas = new Button();
+            buttonIdeas.Width = 108;
+            buttonIdeas.Height = 32;
+            buttonIdeas.FontSize = 14;
+            buttonIdeas.SetValue(Button.StyleProperty, Application.Current.Resources["SquareButtonStyle"]);
+            buttonIdeas.Content = LocalizedLangExtension.GetString("ideas");
+            buttonIdeas.Margin = new Thickness(8, 24, 0, 0);
+
+            Button buttonCountries = new Button();
+            buttonCountries.Width = 108;
+            buttonCountries.Height = 32;
+            buttonCountries.FontSize = 14;
+            buttonCountries.SetValue(Button.StyleProperty, Application.Current.Resources["SquareButtonStyle"]);
+            buttonCountries.Content = LocalizedLangExtension.GetString("countries");
+            buttonCountries.Margin = new Thickness(8, 24, 0, 0);
+
+
+            stackPanelButton1.Children.Add(buttonEvents);
+            stackPanelButton1.Children.Add(buttonNationalFocus);
+            stackPanelButton1.Children.Add(buttonIdeas);
+            stackPanelButton1.Children.Add(buttonCountries);
+
+            StackPanel stackPanelButton2 = new StackPanel();
+            stackPanelButton2.Orientation = Orientation.Horizontal;
+
+            Button buttonDecisions = new Button();
+            buttonDecisions.Width = 108;
+            buttonDecisions.Height = 32;
+            buttonDecisions.FontSize = 14;
+            buttonDecisions.SetValue(Button.StyleProperty, Application.Current.Resources["SquareButtonStyle"]);
+            buttonDecisions.Content = LocalizedLangExtension.GetString("decisions");
+            buttonDecisions.Margin = new Thickness(32, 24, 0, 0);
+
+            stackPanelButton2.Children.Add(buttonDecisions);
+
+            stackPanelV.Children.Add(stackPanelButton1);
+            stackPanelV.Children.Add(stackPanelButton2);
+
+            win.Content = stackPanelV;
+
+            win.ShowDialog();
         }
+
+
 
         //
         List<string> newTags = new List<string>();
@@ -478,6 +545,7 @@ namespace MookEditor
             buttonCreate.Margin = new Thickness(40, 24, 0, 0);
             buttonCreate.Click += (s, ee) => ButtonCreate_Click(textBoxName, textBoxVersion, textBoxDirectory, win);
             Button buttonCancel = new Button();
+            buttonCancel.SetValue(Button.StyleProperty, Application.Current.Resources["SquareButtonStyle"]);
             buttonCancel.Content = string.Format("       {0}       ", LocalizedLangExtension.GetString("Cancel"));
             buttonCancel.Margin = new Thickness(268, 24, 40, 0);
             buttonCancel.Click += (s,ee) => ButtonCancel_Click(win);
@@ -549,9 +617,6 @@ namespace MookEditor
             sw1.Close();
             fs1.Close();
 
-            //读取模组后关闭此窗口
-            LoadMod(hoi4ModFile);
-
             win.Close();
         }
 
@@ -597,8 +662,7 @@ namespace MookEditor
             cofd.IsFolderPicker = false;
             if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                gameModFilePath = "";
-                gameModRootPath = "";
+                projectRootPath = "";
 
                 fileTree.Items.Clear();
                 listItems.Clear();
@@ -626,8 +690,8 @@ namespace MookEditor
             }
         }
         
-        // 打开文件夹
-        private void menuOpenOpenFolder_Click(object sender, RoutedEventArgs e)
+        // 打开项目
+        private void menuOpenOpenProject_Click(object sender, RoutedEventArgs e)
         {
             CommonOpenFileDialog cofd = new CommonOpenFileDialog();
             cofd.IsFolderPicker = true;
@@ -635,24 +699,23 @@ namespace MookEditor
             {
                 new Task(() => {
                     this.BeginInvoke(new Action(() => {
-                        gameModFilePath = "";
-                        gameModRootPath = cofd.FileName;
+                        projectRootPath = cofd.FileName;
 
                         fileTree.Items.Clear();
                         listItems.Clear();
                         editorManager.Clear();
 
-                        TreeViewItem parentNode = SetTreeViewItem("Resources/Images/OpenFolder.png", Path.GetFileNameWithoutExtension(cofd.FileName), Path.GetFileName(gameModRootPath));
+                        TreeViewItem parentNode = SetTreeViewItem("Resources/Images/OpenFolder.png", Path.GetFileNameWithoutExtension(cofd.FileName), Path.GetFileName(projectRootPath));
 
                         TVItems items = new TVItems()
                         {
                             ViewItem = parentNode,
-                            path = gameModRootPath,
+                            path = projectRootPath,
                             isFolder = true
                         };
                         listItems.Add(items);
 
-                        LoadFileDirectory(gameModRootPath, parentNode);
+                        LoadFileDirectory(projectRootPath, parentNode);
                         parentNode.IsExpanded = true;//子项展开
                         fileTree.Items.Add(parentNode);
                     }));
@@ -661,71 +724,6 @@ namespace MookEditor
             }
         }
 
-        
-        // 打开模组
-        private void menuOpenMod_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            //ofd.InitialDirectory = @"D:\";
-            ofd.Filter = "MOD模组|*.mod|所有文件|*.*";
-            if (ofd.ShowDialog() == true)
-            {
-                //如果该目录不存在则返回
-                if (!Directory.Exists(Path.GetDirectoryName(ofd.FileName) + "\\" + Path.GetFileNameWithoutExtension(ofd.FileName)))
-                {
-                    return;
-                }
-                //
-                LoadMod(ofd.FileName);
-            }
-
-        }
-
-        //读取模组
-        public void LoadMod(string modPath)
-        {
-            new Task(() => {
-                this.BeginInvoke(new Action(() => {
-                    gameModFilePath = modPath;
-                    gameModRootPath = Path.GetDirectoryName(modPath) + "\\" + Path.GetFileNameWithoutExtension(modPath);
-
-                    fileTree.Items.Clear();
-                    listItems.Clear();
-                    editorManager.Clear();
-
-                    FileStream fs = new FileStream(gameModFilePath, FileMode.Open);
-                    StreamReader sr = new StreamReader(fs, new UTF8Encoding(false));
-                    string mc = sr.ReadToEnd();
-                    sr.Close();
-                    fs.Close();
-                    //模组配置
-                    modConfig = new ModConfig(mc);
-                    string name = "";
-                    if (string.IsNullOrWhiteSpace(modConfig.name.Replace("\"", "")))
-                    {
-                        name = Path.GetFileNameWithoutExtension(gameModFilePath);
-                    }
-                    else
-                    {
-                        name = modConfig.name.Replace("\"", "");
-                    }
-                    Console.WriteLine(modConfig.name);
-                    TreeViewItem parentNode = SetTreeViewItem("Resources/Images/OpenFolder.png", name, Path.GetFileName(gameModRootPath));
-                    TVItems items = new TVItems()
-                    {
-                        ViewItem = parentNode,
-                        path = gameModRootPath,
-                        isFolder = true
-                    };
-                    listItems.Add(items);
-                    LoadFileDirectory(gameModRootPath, parentNode);
-                    parentNode.IsExpanded = true;//子项展开
-                    fileTree.Items.Add(parentNode);
-                    //
-                    editorManager.LoadDataFromFile(gameModFilePath);
-                }));
-            }).Start();
-        }
 
         //保存
         private void menuSave_Click(object sender, RoutedEventArgs e)
@@ -754,12 +752,6 @@ namespace MookEditor
             editorManager.Clear();
             fileTree.Items.Clear();
             listItems.Clear();
-        }
-
-        //模组设置
-        private void menuModSetting_Click(object sender, RoutedEventArgs e)
-        {
-            editorManager.LoadDataFromFile(gameModFilePath);
         }
 
         //退出程序

@@ -14,19 +14,16 @@
     <Grid>
         <Menu Margin="0,0,-0.4,0" Height="30" VerticalAlignment="Top">
             <MenuItem Header="{ll:LocalizedLang File}" >
-                <MenuItem Name="menuNewFile" Header="{ll:LocalizedLang NewFile}" Click="menuNewFile_Click"/>
+                <MenuItem Name="menuNewProject" Header="{ll:LocalizedLang NewProject}" Click="menuNewProject_Click"/>
                 <MenuItem Name="menuNewMod" Header="{ll:LocalizedLang NewModule}" Click="menuNewMod_Click"/>
                 <Separator/>
                 <MenuItem Name="menuOpenFile" Header="{ll:LocalizedLang OpenFile}" Click="menuOpenFile_Click"/>
-                <MenuItem Name="menuOpenOpenFolder" Header="{ll:LocalizedLang OpenFolder}" Click="menuOpenOpenFolder_Click"/>
-                <MenuItem Name="menuOpenMod" Header="{ll:LocalizedLang OpenMod}" Click="menuOpenMod_Click"/>
+                <MenuItem Name="menuOpenOpenProject" Header="{ll:LocalizedLang OpenProject}" Click="menuOpenOpenProject_Click"/>
                 <Separator/>
                 <MenuItem Name="menuSave" Header="{ll:LocalizedLang Save}" Click="menuSave_Click"/>
                 <MenuItem Name="menuSaveas" Header="{ll:LocalizedLang Saveas}" Click="menuSaveas_Click"/>
                 <Separator/>
                 <MenuItem Name="menuCloseProject" Header="{ll:LocalizedLang CloseProject}" Click="menuCloseProject_Click"/>
-                <Separator/>
-                <MenuItem Name="menuModSetting" Header="{ll:LocalizedLang ModSetting}" Click="menuModSetting_Click"/>
                 <Separator/>
                 <MenuItem Name="menuQuit" Header="{ll:LocalizedLang Quit}" Click="menuQuit_Click"/>
             </MenuItem>
@@ -43,7 +40,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TreeView Name="fileTree" Grid.Column="0"  Margin="0,30,0,28.4" SelectedItemChanged="FileTree_SelectedItemChanged" MouseRightButtonUp="fileTree_MouseRightButtonUp" BorderBrush="{x:Null}" />
-            <GridSplitter Grid.Column="1"  HorizontalAlignment="Center" Grid.RowSpan="1" Width="1" Margin="0,30,0,28.4" Background="#FF3C3C3C" />
+            <GridSplitter Grid.Column="1"  HorizontalAlignment="Center" Grid.RowSpan="1" Width="1" Margin="0,30,0,28.4" />
             <Grid Margin="0.2,30,-0.4,28.4" Grid.Column="2">
                 <TreeView Name="modClassTree" SelectedItemChanged="modClassTree_SelectedItemChanged" MouseDoubleClick="modClass_MouseDoubleClick" MouseRightButtonUp="modClass_MouseRightButtonUp" BorderBrush="{x:Null}" />
                 <WindowsFormsHost Name="scintillaFormsHost" Visibility="Hidden">

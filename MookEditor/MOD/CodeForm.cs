@@ -72,6 +72,7 @@ namespace MookEditor.MOD
                 lineStr[i] = lineStr[i].TrimEnd();
                 lineStr[i] = Regex.Replace(lineStr[i], @" *= *{ *\n*", " = {\n");
                 lineStr[i] = Regex.Replace(lineStr[i], @" *\n*} *\n*", "\n}\n");
+                //获取匹配字符串数组，复制下来加上回车，删除之前的旧字符串不就好了
 
                 for (int stackIndex = 0; stackIndex < lineStr[i].Length; stackIndex++)
                 {

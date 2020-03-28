@@ -240,9 +240,6 @@
   <data name="MissingBraces" xml:space="preserve">
     <value>缺少括号</value>
   </data>
-  <data name="ModSetting" xml:space="preserve">
-    <value>模组设置</value>
-  </data>
   <data name="MookEditor" xml:space="preserve">
     <value>模组编辑器</value>
   </data>
@@ -264,6 +261,9 @@
   <data name="NewModule" xml:space="preserve">
     <value>新建模组</value>
   </data>
+  <data name="NewProject" xml:space="preserve">
+    <value>新建项目</value>
+  </data>
   <data name="OpenFile" xml:space="preserve">
     <value>打开文件</value>
   </data>
@@ -272,6 +272,9 @@
   </data>
   <data name="OpenMod" xml:space="preserve">
     <value>打开模组</value>
+  </data>
+  <data name="OpenProject" xml:space="preserve">
+    <value>打开项目</value>
   </data>
   <data name="Paste" xml:space="preserve">
     <value>粘贴</value>

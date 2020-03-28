@@ -430,15 +430,6 @@ namespace MookEditor.Resources.I18n {
         }
         
         /// <summary>
-        ///   查找类似 模组设置 的本地化字符串。
-        /// </summary>
-        public static string ModSetting {
-            get {
-                return ResourceManager.GetString("ModSetting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 模组编辑器 的本地化字符串。
         /// </summary>
         public static string MookEditor {
@@ -502,6 +493,15 @@ namespace MookEditor.Resources.I18n {
         }
         
         /// <summary>
+        ///   查找类似 新建项目 的本地化字符串。
+        /// </summary>
+        public static string NewProject {
+            get {
+                return ResourceManager.GetString("NewProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 打开文件 的本地化字符串。
         /// </summary>
         public static string OpenFile {
@@ -525,6 +525,15 @@ namespace MookEditor.Resources.I18n {
         public static string OpenMod {
             get {
                 return ResourceManager.GetString("OpenMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 打开项目 的本地化字符串。
+        /// </summary>
+        public static string OpenProject {
+            get {
+                return ResourceManager.GetString("OpenProject", resourceCulture);
             }
         }
         
